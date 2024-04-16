@@ -78,6 +78,16 @@ This is the place for you to write reflections:
 
 #### Reflection Publisher-1
 
+1. Dalam konteks desain pola Observer, penggunaan Subscriber (atau Observer) sebagai sebuah trait dalam bahasa Rust seringkali dianggap sebagai pendekatan yang sangat berguna. Dengan menerapkan Subscriber sebagai trait, kita memberikan kemampuan untuk memiliki banyak implementasi konkret yang berbeda. Ini memungkinkan fleksibilitas yang lebih besar dalam pengembangan kode karena memungkinkan penambahan jenis-jenis subscriber baru tanpa perlu mengubah struktur kode yang sudah ada.
+<br> <br> Ketika kita berbicara tentang implementasi ini dalam konteks BambangShop, menggunakan sebuah struct Model tunggal mungkin sudah cukup. Namun, mempertimbangkan kemungkinan adanya berbagai jenis subscriber di BambangShop, menerapkan Subscriber sebagai sebuah trait akan menjadi pilihan yang lebih bijak. Dengan cara ini, setiap jenis subscriber dapat memiliki perilaku notifikasi yang berbeda, tanpa mengganggu fungsi utama dari struct Model. Hal ini memungkinkan BambangShop untuk menjadi lebih adaptif terhadap perubahan dan kebutuhan bisnis yang mungkin muncul di masa depan.
+
+2. Dalam konteks ini, DashMap menjadi pilihan yang lebih unggul daripada Vec ketika kita perlu menangani id unik di Program dan URL di Subscriber. DashMap adalah implementasi HashMap yang bersifat konkuren, yang berarti itu dapat digunakan dengan aman dari beberapa thread secara bersamaan. Kelebihan utama DashMap adalah efisiensinya dalam menyimpan pasangan key-value dengan kompleksitas waktu konstan O(1) untuk operasi penambahan, penghapusan, dan pencarian berdasarkan key.
+<br><br> Di sisi lain, jika kita menggunakan Vec untuk memastikan keunikan, kita harus melakukan iterasi pada seluruh daftar untuk memeriksa duplikat setiap kali menambahkan item baru. Ini menghasilkan kompleksitas waktu O(N), yang tidak efisien terutama saat ukuran data menjadi besar.
+<br> <br> Oleh karena itu, penggunaan DashMap menjadi lebih disukai karena efisiensinya dalam memastikan keunikan id dan URL, serta kemampuannya untuk menangani akses konkuren dengan aman.
+3. Dalam situasi tersebut, DashMap memang menjadi solusi yang lebih baik untuk menjamin keamanan thread saat beberapa thread beroperasi pada variabel statis SUBSCRIBERS secara bersamaan. Hal ini terutama karena Singleton Pattern tidak selalu dapat menjamin keamanan thread, terutama ketika ada konkurensi di dalam sistem.
+<br> <br> Dengan menggunakan DashMap, kita memastikan bahwa operasi-operasi pada SUBSCRIBERS dapat dilakukan secara aman oleh banyak thread sekaligus. DashMap memungkinkan akses konkuren ke Map, sehingga menghindari masalah seperti race condition yang mungkin terjadi dalam implementasi Singleton.
+<br> <br> Oleh karena itu, penggunaan DashMap dalam kasus tersebut merupakan pilihan yang lebih aman dan dapat diandalkan untuk memastikan keamanan thread dan integritas data, ketimbang mengandalkan Singleton Pattern yang mungkin kurang dapat diandalkan dalam konteks konkurensi.
+
 #### Reflection Publisher-2
 
 #### Reflection Publisher-3
